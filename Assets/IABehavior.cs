@@ -9,19 +9,24 @@ public class IABehavior : MonoBehaviour
         Walk,
         Retreat,
         Die,
-        SpeedUp
+        SpeedUp,
+        Back
     }
 
     [Header("Settings")]
     public GameObject target;
     public float speed = 2f;
+    public float speedUpMultiplier =2.5f;
     public float retreatSpeed = 3f;
     public float retreatDuration = 0.5f;
+    public float backSpeed = 5f;
+    public float backDuration = 1.5f;
     public int health = 1;
 
     private State currentState;
     private Rigidbody body;
     private float retreatTimer;
+    private float backTimer;
 
     void Start()
     {
@@ -54,6 +59,9 @@ public class IABehavior : MonoBehaviour
                 break;
             case State.SpeedUp:
                 TickSpeedUp();
+                break;
+            case State.Back:
+                TickBack();
                 break;
         }
     }
@@ -102,32 +110,72 @@ public class IABehavior : MonoBehaviour
             return;
         }
 
-        Vector3 direction = transform.position - target.transform.position;
+        Vector3 direction = target.transform.position - transform.position;
         direction.y = 0f;
+        body.linearVelocity = direction.normalized * (speed * speedUpMultiplier);
+       
+    }
+
+    void TickBack()
+    {
+       
+            if (target == null)
+            {
+                ChangeState(State.Walk);
+                return;
+            }
+
+            Vector3 direction = transform.position - target.transform.position;
+            direction.y = 0f;
+            body.linearVelocity = direction.normalized * backSpeed;
+            backTimer += Time.fixedDeltaTime;
+
+            if (backTimer >= backDuration)
+            {
+                
+                if (health <= 2)
+                {
+                    ChangeState(State.SpeedUp);
+                }
+                else
+                {
+                    ChangeState(State.Walk);
+                }
+            }
+        
     }
 
     public void TakeDamage(int damage)
     {
         health -= damage;
 
-        if (health <= 2)
-        {
-            ChangeState(State.SpeedUp);
-        }
-
         if (health <= 0)
         {
             ChangeState(State.Die);
         }
+        else if (health == 3 && currentState != State.Back)
+        {
+           
+            ChangeState(State.Back);
+        }
+        else if (health <= 2 && currentState != State.SpeedUp && currentState != State.Back && currentState != State.Retreat)
+        {
+           
+            ChangeState(State.SpeedUp);
+        }
     }
 
-    void ChangeState(State newState)
+    public void ChangeState(State newState)
     {
         currentState = newState;
 
         if (newState == State.Retreat)
         {
             retreatTimer = 0f;
+        }
+        else if (newState == State.Back)
+        {
+            backTimer = 0f; // Reseta o tempo de recuo ao entrar no estado Back
         }
 
         Debug.Log(gameObject.name + " changed to: " + newState);

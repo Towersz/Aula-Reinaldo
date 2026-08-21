@@ -128,9 +128,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::IABehavior
   target: {fileID: 0}
   speed: 2
+  speedUpMultiplier: 2.5
   retreatSpeed: 3
   retreatDuration: 0.5
-  health: 3
+  backSpeed: 5
+  backDuration: 1.5
+  health: 4
 --- !u!54 &1479770466885406733
 Rigidbody:
   m_ObjectHideFlags: 0

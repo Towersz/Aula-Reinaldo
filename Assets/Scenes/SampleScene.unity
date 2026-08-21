@@ -5614,9 +5614,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6892810582412855286, guid: 6ae713caeaa2f544fa92b1a4e5729d9e, type: 3}
+      propertyPath: health
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6892810582412855286, guid: 6ae713caeaa2f544fa92b1a4e5729d9e, type: 3}
       propertyPath: target
       value: 
       objectReference: {fileID: 852153465}
+    - target: {fileID: 6892810582412855286, guid: 6ae713caeaa2f544fa92b1a4e5729d9e, type: 3}
+      propertyPath: changeDirectionInterval
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
