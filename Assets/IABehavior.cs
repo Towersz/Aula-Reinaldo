@@ -52,6 +52,9 @@ public class IABehavior : MonoBehaviour
             case State.Die:
                 TickDie();
                 break;
+            case State.SpeedUp:
+                TickSpeedUp();
+                break;
         }
     }
 
@@ -98,6 +101,9 @@ public class IABehavior : MonoBehaviour
             ChangeState(State.Walk);
             return;
         }
+
+        Vector3 direction = transform.position - target.transform.position;
+        direction.y = 0f;
     }
 
     public void TakeDamage(int damage)
@@ -106,7 +112,7 @@ public class IABehavior : MonoBehaviour
 
         if (health <= 2)
         {
-            ChangeState(State.SpeedUp)
+            ChangeState(State.SpeedUp);
         }
 
         if (health <= 0)
